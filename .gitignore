@@ -4,6 +4,6 @@
 *.swo
 venv
 db/*
-logs/*
+www/logs/*
 tests/db
 frontend-starter-kit

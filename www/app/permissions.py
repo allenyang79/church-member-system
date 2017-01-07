@@ -19,6 +19,7 @@ class Permissions(object):
     def __getattr__(self, key):
         if key in self._permissions:
             return key
+        raise Exception('unknow permission: %s' % key)
 
 PERMISSIONS = Permissions()
 
@@ -30,7 +31,7 @@ PERMISSIONS.register([
 
     'READ_PERSON_LIST',
     'READ_PERSON',
-    'WRITE_PERSION',
+    'WRITE_PERSON',
 
     'READ_GROUP_LIST',
     'READ_GROUP',
@@ -43,7 +44,7 @@ ROLES = {
     'ADMIN': {
         PERMISSIONS.READ_PERSON_LIST,
         PERMISSIONS.READ_PERSON,
-        PERMISSIONS.WRITE_PERSION,
+        PERMISSIONS.WRITE_PERSON,
         PERMISSIONS.READ_GROUP_LIST,
         PERMISSIONS.READ_GROUP,
         PERMISSIONS.WRITE_GROUP,

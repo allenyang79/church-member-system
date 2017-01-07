@@ -28,7 +28,7 @@ class LoginFailError(error.InvalidError):
 
 
 class UnauthorizedError(error.InvalidError):
-    def __init__(self, message='Unauthorized.', status_code=403):
+    def __init__(self, message='Unauthorized.', status_code=401):
         super(UnauthorizedError, self).__init__(message, status_code)
 
 
@@ -76,7 +76,8 @@ def init(app):
         )
         if endpoint and endpoint not in white_list :
             if not flask_login.current_user.is_authenticated:
-                current_app.login_manager.unauthorized()
+                raise UnauthorizedError()
+                #return current_app.login_manager.unauthorized()
     return login_manager
 
 

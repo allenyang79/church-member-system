@@ -2,14 +2,19 @@
 
 from schematics.models import Model
 from schematics.types import StringType, IntType, BooleanType, ListType, ModelType
-from custom_types import MongoDateType
+from schematics.transforms import whitelist, blacklist
+
+
 
 from app.db import db
 from app import error
-from app.models.utils import get_increment_id
+from app.permissions import PERMISSIONS
 
+from app.models.utils import get_increment_id
 from app.models import DocumentModel
 from app.models import CollectionProperty
+
+from custom_types import MongoDateType
 
 
 class PersonRelationModel(Model):
@@ -66,6 +71,7 @@ class PersonModel(DocumentModel):
 
     note = StringType()
     removed = BooleanType(default=False, serialize_when_none=True)
+
 
     @classmethod
     def create(cls, payload):

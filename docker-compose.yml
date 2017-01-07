@@ -1,0 +1,24 @@
+version: '2'
+services:
+    www:
+        image: allenyang79/account-manager
+        build:
+            context: www/.
+            dockerfile: Dockerfile
+        command: bash scripts/run-uwsgi-server.sh
+        environment:
+            - "PYTHONPATH=/srv/www"
+        ports:
+            - "5000:5000"
+        volumes:
+            - ./www:/srv/www
+        links:
+            - db
+        depends_on:
+            - db
+    db:
+        image: mongo
+        ports:
+            - "27017:27017"
+        volumes:
+          - ./db:/data/db
