@@ -2,7 +2,7 @@
 WORK_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 
 source ${WORK_DIR}/venv/bin/activate
-uwsgi --socket 0.0.0.0:5000 --protocol=http \
+ENV=production uwsgi --socket 0.0.0.0:5000 --protocol=http \
     --chdir ${WORK_DIR}                     \
     --check-static ${WORK_DIR}/static       \
     --static-map /static=${WORK_DIR}/static \
