@@ -32,6 +32,8 @@ app = middlewares.apply_middlewares(app,
 @app.route('/')
 @app.route('/index')
 def index():
+    if config.get('global', 'mode') == 'production':
+        return redirect('/static')
     return {
         'success': True,
         'ts': int(time.time())

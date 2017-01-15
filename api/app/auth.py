@@ -68,7 +68,6 @@ def init(app):
             endpoint = request.url_rule.endpoint
         else:
             endpoint = None
-
         white_list = (
             'index',
             'heartbeat',

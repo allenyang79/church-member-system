@@ -23,31 +23,33 @@ def wrap_cors(app):
     def option_autoreply():
         if request.method == 'OPTIONS':
             resp = current_app.make_default_options_response()
-            h = resp.headers
-            # Allow the origin which made the XHR
-            h['Access-Control-Allow-Origin'] = request.headers.get('Origin', '*')
-            # Allow Credentials
-            h['Access-Control-Allow-Credentials'] = 'true'
-            # Allow the actual method
-            h['Access-Control-Allow-Methods'] = request.headers['Access-Control-Request-Method']
-            # Allow for cache $n seconds
-            h['Access-Control-Max-Age'] = 3600 if config.get('global', "mode") == "production" else 1
-            # We also keep current headers
-            if 'Access-Control-Request-Headers' in request.headers:
-                h['Access-Control-Allow-Headers'] = request.headers.get('Access-Control-Request-Headers', '')
+            if hasattr(resp, 'headers'):
+                h = resp.headers
+                # Allow the origin which made the XHR
+                h['Access-Control-Allow-Origin'] = request.headers.get('Origin', '*')
+                # Allow Credentials
+                h['Access-Control-Allow-Credentials'] = 'true'
+                # Allow the actual method
+                h['Access-Control-Allow-Methods'] = request.headers['Access-Control-Request-Method']
+                # Allow for cache $n seconds
+                h['Access-Control-Max-Age'] = 3600 if config.get('global', "mode") == "production" else 1
+                # We also keep current headers
+                if 'Access-Control-Request-Headers' in request.headers:
+                    h['Access-Control-Allow-Headers'] = request.headers.get('Access-Control-Request-Headers', '')
             return resp
 
     @app.after_request
-    def allow_origin(response):
+    def allow_origin(resp):
         if request.method == 'OPTIONS':
-            return response
-
-        response.headers['Access-Control-Allow-Headers'] = request.headers.get('Access-Control-Request-Headers', '')
-        response.headers['Access-Control-Allow-Origin'] = request.headers.get('Origin', '*')
-        response.headers['Access-Control-Allow-Credentials'] = 'true'
-        response.headers['Access-Control-Allow-Methods'] = 'GET,POST,OPTIONS'
-        response.headers['Access-Control-Max-Age'] = 1728000
-        return response
+            return resp
+        if hasattr(resp, 'headers'):
+            h = resp.headers
+            h['Access-Control-Allow-Headers'] = request.headers.get('Access-Control-Request-Headers', '')
+            h['Access-Control-Allow-Origin'] = request.headers.get('Origin', '*')
+            h['Access-Control-Allow-Credentials'] = 'true'
+            h['Access-Control-Allow-Methods'] = 'GET,POST,OPTIONS'
+            h['Access-Control-Max-Age'] = 1728000
+        return resp
 
     return app
 
