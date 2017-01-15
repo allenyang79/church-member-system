@@ -4,6 +4,7 @@ from flask import Flask, Response
 from flask import make_response
 
 from werkzeug.routing import BaseConverter
+from werkzeug.wrappers import BaseResponse
 from werkzeug.exceptions import HTTPException
 
 
@@ -16,7 +17,7 @@ import bson.json_util
 class CustomResponse(Response):
     @classmethod
     def force_type(cls, rv, environ=None):
-        if isinstance(rv, (Response, HTTPException)):
+        if isinstance(rv, (BaseResponse, Response, HTTPException)):
             return super(CustomResponse, cls).force_type(rv, environ)
         status = headers = None
         if isinstance(rv, tuple):
