@@ -56,7 +56,7 @@ class PersonModel(DocumentModel):
     education = StringType()
     job = StringType()
 
-    is_register = BooleanType(default=lambda: False)
+    register_type = StringType(choices=['unregister', 'registered', 'dismiss'])
     register_date = MongoDateType()
     unregister_date = MongoDateType()
 

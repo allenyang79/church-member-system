@@ -38,7 +38,7 @@ def person_list():
     term = request.values.get('term')
     data = [person.to_primitive() for person in PersonModel.search(term)]
     if not me.has_permissions(PERMISSIONS.READ_PERSON):
-        fields = ('person_id', 'name', 'gender', 'birthday', 'is_register')
+        fields = ('person_id', 'name', 'gender', 'birthday', 'register_type')
         data = map(lambda x: {k:v for k,v in x.items() if k in fields}, data)
     return {
         'success': True,
@@ -90,7 +90,7 @@ def person_one_update(person_id):
         'email_1',
         'education',
         'job',
-        'is_register',
+        'register_type',
         'register_day',
         'unregister_day',
         'baptize_date',

@@ -51,7 +51,7 @@ class DocumentModel(Model):
     @classmethod
     def fetch(cls, query={}, fields=None):
         for native in cls.collection.find(query, fields):
-            yield cls(native)
+            yield cls(native, strict=False)
 
     @classmethod
     def create(cls, payload):
